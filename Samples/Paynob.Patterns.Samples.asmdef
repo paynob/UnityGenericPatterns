@@ -1,0 +1,16 @@
+{
+    "name": "Paynob.Patterns.Samples",
+    "rootNamespace": "",
+    "references": [
+        "Paynob.Patterns"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,28 @@
+{
+    "name": "es.paynob.patterns",
+    "version": "1.0.0",
+    "displayName": "Generic Patterns",
+    "description": "A collection of generic patterns for Unity.",
+    "unity": "2017.1",
+    "documentationUrl": "https://github.com/paynob/UnityGenericPatterns",
+    "changelogUrl": "https://github.com/paynob/UnityGenericPatterns/blob/main/CHANGELOG.md",
+    "licensesUrl": "https://github.com/paynob/UnityGenericPatterns/blob/main/LICENSE.md",
+   "keywords": [
+      "Patterns",
+      "Utils",
+      "Arquitecture",
+      "Behaviour"
+    ],
+    "author": {
+      "name": "paynob",
+      "email": "info@paynob.es",
+      "url": "https://www.paynob.es"
+    },
+    "samples" : [
+      {
+        "displayName" : "Service Locator Sample",
+        "description" : "A sample demonstrating the use of the Service Locator pattern.",
+        "path" : "Samples/Services"
+      }
+    ]
+}
