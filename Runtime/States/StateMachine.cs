@@ -157,7 +157,17 @@
 			Current.Update?.Invoke( );
 			return true;
 		}
-		void IEnumerator.Reset() => Current = Default;
+		public void Reset(){
+			if( Current == Default ) {
+				return;
+			}
+			var old = Current;
+			old.OnExit?.Invoke( );
+			OnExitState?.Invoke( (T)old.Name );
+			Current = Default;
+			Current.OnEnter?.Invoke( );
+			OnEnterState?.Invoke( (T)Current.Name );
+		}
 		void IDisposable.Dispose() { }
 
 		public void Update() {

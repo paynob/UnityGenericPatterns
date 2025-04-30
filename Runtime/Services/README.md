@@ -71,19 +71,13 @@ ImplName=Paynob.Patterns.Logging.ConsoleLoggingService
 Overrides=false
 ~~~
 
-Registering Services from Configuration:
+## Registering Services from Configuration:
 The ServicesInitializer reads the configuration file and registers the services automatically:
+
+```csharp
 [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 static void OnBeforeSceneLoadRuntimeMethod()
 {
     ServicesInitializer.Initialize();
 }
-
-Debugging:
-Use the following methods to debug the state of the ServiceLocator:
-- ServiceLocator.LogRegisteredServices(): Logs all registered services.
-- ServiceLocator.IsServiceRegistered<T>(): Checks if a specific service is registered.
-- ServiceLocator.IsNullService<T>(): Checks if a service is a null service.
-
-License:
-This project is licensed under the MIT License. See the LICENSE file for details.
+```
