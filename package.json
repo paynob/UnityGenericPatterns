@@ -1,6 +1,6 @@
 {
     "name": "es.paynob.patterns",
-    "version": "1.0.0",
+    "version": "0.0.2",
     "displayName": "Generic Patterns",
     "description": "A collection of generic patterns for Unity.",
     "unity": "2017.1",
