@@ -138,6 +138,7 @@
 		IEnumerator IEnumerable.GetEnumerator() => this;
 		IEnumerator<T> IEnumerable<T>.GetEnumerator() => this;
 
+		public T CurrentState => (T)Current.Name;
 		T IEnumerator<T>.Current => (T)Current.Name;
 
 		object IEnumerator.Current => Current.Name;

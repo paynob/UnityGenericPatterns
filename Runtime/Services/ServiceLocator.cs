@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 namespace Paynob.Patterns.Services
 {
 	using System;
@@ -8,6 +8,12 @@ namespace Paynob.Patterns.Services
 	public static class ServiceLocator
 	{
 		private static readonly Dictionary<Type , object> services = new( );
+		private static Func<Type, object> _externalResolver;
+
+		public static void SetResolver(Func<Type, object> resolver)
+		{
+			_externalResolver = resolver;
+		}
 		
 		public static bool RegisterService<T>( T service , bool overrides = true ) where T : class {
 			UnityEngine.Debug.Log($"Registering service of type ({typeof( T ).Name}){service.GetType().Name} with overrides: {overrides}");
@@ -74,9 +80,18 @@ namespace Paynob.Patterns.Services
 			var type = typeof( T );
 
 			if( !services.TryGetValue( type , out var service ) ) {
-				UnityEngine.Debug.LogWarning($"Service of type {type.Name} is not registered. Returning a null service.");
-        		service = CreateNullService<T>( );
-				services [ type ] = service;
+				// Si no está en el diccionario, intentamos usar el resolver externo (el DependencyContainer)
+				if (_externalResolver != null)
+				{
+					service = _externalResolver(type);
+				}
+
+				if (service == null)
+				{
+					UnityEngine.Debug.LogWarning($"Service of type {type.Name} is not registered. Returning a null service.");
+					service = CreateNullService<T>();
+					services[type] = service;
+				}
 			}
 
 			return (T)service;

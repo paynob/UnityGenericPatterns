@@ -95,7 +95,7 @@ namespace Paynob.Patterns.Services
                         continue;
                     }
 
-                    var overrides = properties.GetValueOrDefault("Overrides", "true").ToLower() == "true";
+                    var overrides = (properties.ContainsKey("Overrides") ? properties["Overrides"] : "true").ToLower() == "true";
                     
                     ServiceLocator.RegisterService(type, superType, overrides);
                 }

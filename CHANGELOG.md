@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [1.0.0] - 2025-04-16
+## [0.0.1] - 2025-04-16
 ### Added
 1. **Command Pattern**
 2. **Memento Pattern**

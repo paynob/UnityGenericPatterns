@@ -21,3 +21,4 @@ A reusable library of design patterns for Unity, designed to simplify and enhanc
 1. Open Unity Editor.
 2. Open `Window->Package Manager` window
 3. ![Click on Add from disk option](https://docs.unity3d.com/2020.1/Documentation/uploads/Main/PackageManagerUI-GitURLPackageButton.png).
+4. Use the url [https://github.com/paynob/UnityGenericPatterns.git](https://github.com/paynob/UnityGenericPatterns.git)
