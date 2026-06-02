@@ -1,5 +1,4 @@
-﻿﻿
-namespace Paynob.Patterns.Services
+﻿﻿namespace Paynob.Patterns.Services
 {
 	using System;
 	using System.Collections.Generic;
@@ -80,7 +79,7 @@ namespace Paynob.Patterns.Services
 			var type = typeof( T );
 
 			if( !services.TryGetValue( type , out var service ) ) {
-				// Si no está en el diccionario, intentamos usar el resolver externo (el DependencyContainer)
+				// Si no está en el diccionario, intentamos usar el resolver externo (el Container)
 				if (_externalResolver != null)
 				{
 					service = _externalResolver(type);

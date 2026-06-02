@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [0.0.2] - 2026-06-02
+### Added
+1. **Event Bus Pattern**
+2. **Dependency Injection Pattern**
+
 ## [0.0.1] - 2025-04-16
 ### Added
 1. **Command Pattern**

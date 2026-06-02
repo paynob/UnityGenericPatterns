@@ -10,18 +10,18 @@
 
     public class ServicesInitializer
     {
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void OnBeforeSceneLoadRuntimeMethod()
-        {
-            Debug.Log("ServicesInitializer: OnBeforeSceneLoadRuntimeMethod");
-            #if !UNITY_EDITOR
-            ServiceLocator.RegisterService<IScoreService, PlayerPrefsScoreService>(false);
-            #else
-            ServiceLocator.RegisterService<IScoreService, FirebaseScoreService>(false);
-            #endif
+        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        // static void OnBeforeSceneLoadRuntimeMethod()
+        // {
+        //     Debug.Log("ServicesInitializer: OnBeforeSceneLoadRuntimeMethod");
+        //     #if !UNITY_EDITOR
+        //     ServiceLocator.RegisterService<IScoreService, PlayerPrefsScoreService>(false);
+        //     #else
+        //     ServiceLocator.RegisterService<IScoreService, FirebaseScoreService>(false);
+        //     #endif
 
-            // Register other services here if needed
-            // ServiceLocator.RegisterService<IOtherService, OtherService>(true);
-        }
+        //     // Register other services here if needed
+        //     // ServiceLocator.RegisterService<IOtherService, OtherService>(true);
+        // }
     }
 }

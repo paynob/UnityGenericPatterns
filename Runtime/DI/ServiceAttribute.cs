@@ -13,10 +13,15 @@ namespace Paynob.Patterns.DI
         /// The lifetime of the service (e.g., Singleton or Transient).
         /// </summary>
         public ServiceLifetime Lifetime { get; }
+        /// <summary>
+        /// An optional name for the service, allowing for multiple registrations of the same type with different names.
+        /// </summary>
+        public string Name { get; }
 
-        public ServiceAttribute(ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        public ServiceAttribute(string name = null,ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             Lifetime = lifetime;
+            Name = name;
         }
     }
 

@@ -5,7 +5,7 @@ using Paynob.Patterns.Services;
 namespace Paynob.Patterns.Samples.DI
 {
     // -------------------------------------------------------------------------
-    // 1. Definición de Interfaces
+    // 1. Interface Definitions
     // -------------------------------------------------------------------------
     public interface ILogService
     {
@@ -18,11 +18,11 @@ namespace Paynob.Patterns.Samples.DI
     }
 
     // -------------------------------------------------------------------------
-    // 2. Implementación de Servicios (Marcados con [Service])
+    // 2. Service Implementations (Marked with [Service])
     // -------------------------------------------------------------------------
 
-    // Ejemplo de un servicio Singleton: Se crea una sola instancia compartida para toda la aplicación.
-    [Service(ServiceLifetime.Singleton)]
+    // Singleton service example: A single shared instance is created for the entire application.
+    [Service(lifetime: ServiceLifetime.Singleton)]
     public class ConsoleLogService : ILogService
     {
         public ConsoleLogService()
@@ -36,8 +36,8 @@ namespace Paynob.Patterns.Samples.DI
         }
     }
 
-    // Ejemplo de un servicio Transient: Se crea una nueva instancia cada vez que se solicita o inyecta.
-    [Service(ServiceLifetime.Transient)]
+    // Transient service example: A new instance is created each time it is requested or injected.
+    [Service(lifetime: ServiceLifetime.Transient)]
     public class SimpleScoreCalculator : IScoreCalculator
     {
         public SimpleScoreCalculator()
@@ -52,25 +52,25 @@ namespace Paynob.Patterns.Samples.DI
     }
 
     // -------------------------------------------------------------------------
-    // 3. Consumidor de Servicios (Demostración de Inyección)
+    // 3. Service Consumer (Injection Demonstration)
     // -------------------------------------------------------------------------
 
-    // Esta clase demuestra los 3 tipos de inyección soportados por DependencyContainer.
-    [Service(ServiceLifetime.Transient)]
+    // This class demonstrates the 3 types of injection supported by Container.
+    [Service(lifetime: ServiceLifetime.Transient)]
     public class GameMatchManager
     {
         private readonly ILogService _logService;
         
-        // Inyección de Propiedad (Requiere setter y atributo [Inject])
+        // Property Injection (Requires setter and [Inject] attribute)
         [Inject]
         public IScoreCalculator ScoreCalculator { get; private set; }
 
-        // Inyección de Campo (Privado o Público, marcado con [Inject])
+        // Field Injection (Private or Public, marked with [Inject])
         [Inject]
         private ILogService _secondaryLoggerReference; 
 
-        // Inyección por Constructor (Recomendado)
-        // El contenedor resuelve e inyecta automáticamente los parámetros.
+        // Constructor Injection (Recommended)
+        // The container automatically resolves and injects parameters.
         public GameMatchManager(ILogService logService)
         {
             _logService = logService;
@@ -80,17 +80,17 @@ namespace Paynob.Patterns.Samples.DI
         {
             _logService.Log("Ending match...");
             
-            // Usando el servicio inyectado por propiedad
+            // Using the property-injected service
             int finalScore = ScoreCalculator.CalculateScore(points, 1.5f);
             
             _logService.Log($"Match ended. Final Score: {finalScore}");
             
-            // _secondaryLoggerReference apunta a la misma instancia Singleton que _logService
+            // _secondaryLoggerReference points to the same Singleton instance as _logService
         }
     }
 
     // -------------------------------------------------------------------------
-    // 4. Ejemplo de uso con MonoBehaviour (Sin Inyección Automática)
+    // 4. Example usage with MonoBehaviour (Without Automatic Injection)
     // -------------------------------------------------------------------------
     
     public class PlayerHUD : MonoBehaviour
@@ -99,8 +99,8 @@ namespace Paynob.Patterns.Samples.DI
 
         void Start()
         {
-            // Como Unity instancia los MonoBehaviours, usamos ServiceLocator para obtener las dependencias.
-            // Esto funciona gracias a que DependencyInitializer conecta el contenedor con ServiceLocator.
+            // Since Unity instantiates MonoBehaviours, we use ServiceLocator to obtain dependencies.
+            // This works because DependencyInitializer connects the container to ServiceLocator.
             _scoreCalculator = ServiceLocator.GetService<IScoreCalculator>();
             
             if (_scoreCalculator != null)
@@ -116,22 +116,22 @@ namespace Paynob.Patterns.Samples.DI
     }
 
     // -------------------------------------------------------------------------
-    // 5. Ejemplo de cómo "instanciar" (Resolver) GameMatchManager
+    // 5. Example of how to "instantiate" (Resolve) GameMatchManager
     // -------------------------------------------------------------------------
     
     public class GameBootstrapper : MonoBehaviour
     {
         void Start()
         {
-            // INCORRECTO:
+            // INCORRECT:
             // var manager = new GameMatchManager(new ConsoleLogService()); 
-            // Si haces esto, pierdes la inyección automática de propiedades (ScoreCalculator sería null).
+            // If you do this, you lose automatic property injection (ScoreCalculator would be null).
 
-            // CORRECTO:
-            // Pides la instancia al ServiceLocator.
-            // 1. El sistema busca GameMatchManager en el contenedor.
-            // 2. Ve que necesita ILogService y lo crea/busca.
-            // 3. Ve que necesita inyectar ScoreCalculator (propiedad) y lo resuelve.
+            // CORRECT:
+            // Request the instance from the ServiceLocator.
+            // 1. The system looks for GameMatchManager in the container.
+            // 2. It sees it needs ILogService and creates/finds it.
+            // 3. It sees it needs to inject ScoreCalculator (property) and resolves it.
             var matchManager = ServiceLocator.GetService<GameMatchManager>();
             
             matchManager.EndMatch(999);
@@ -139,19 +139,19 @@ namespace Paynob.Patterns.Samples.DI
     }
 
     // -------------------------------------------------------------------------
-    // 6. Enfoque "Pure DI" / Composition Root (Evitando ServiceLocator global)
+    // 6. "Pure DI" / Composition Root approach (Avoiding global ServiceLocator)
     // -------------------------------------------------------------------------
-    // Este enfoque centraliza la resolución de dependencias en un solo punto (Installer),
-    // manteniendo las clases consumidoras limpias y fáciles de testear.
+    // This approach centralizes dependency resolution at a single point (Installer),
+    // keeping consumer classes clean and easy to test.
 
-    // A. Componente "Limpio": No usa atributos [Inject] ni ServiceLocator.
-    // Recibe sus dependencias explícitamente vía método. Es el enfoque más robusto.
+    // A. "Clean" Component: Does not use [Inject] attributes or ServiceLocator.
+    // Receives its dependencies explicitly via method. It is the most robust approach.
     public class EnemyUnit : MonoBehaviour
     {
         private IScoreCalculator _calculator;
         private ILogService _logger;
 
-        // Método de inicialización manual
+        // Manual initialization method
         public void Construct(IScoreCalculator calculator, ILogService logger)
         {
             _calculator = calculator;
@@ -161,13 +161,13 @@ namespace Paynob.Patterns.Samples.DI
         }
     }
 
-    // B. Componente "Inyectable": Usa [Inject] para reducir código repetitivo, 
-    // pero no busca las dependencias por sí mismo. Espera pasivamente.
+    // B. "Injectable" Component: Uses [Inject] to reduce repetitive code, 
+    // but does not search for dependencies itself. It waits passively.
     public class SmartTurret : MonoBehaviour
     {
         [Inject] private ILogService _logger;
 
-        // Inyección por Método: El contenedor llamará a esto automáticamente al hacer .Inject()
+        // Method Injection: The container will call this automatically when calling .Inject()
         [Inject]
         public void Init(IScoreCalculator calculator)
         {
@@ -175,8 +175,8 @@ namespace Paynob.Patterns.Samples.DI
         }
     }
 
-    // C. Scene Installer: El ÚNICO script en la escena que conoce el ServiceLocator.
-    // Se encarga de cablear las dependencias al inicio.
+    // C. Scene Installer: The ONLY script in the scene that knows the ServiceLocator.
+    // It handles wiring the dependencies at the start.
     public class GameSceneInstaller : MonoBehaviour
     {
         public EnemyUnit enemy;
@@ -184,13 +184,13 @@ namespace Paynob.Patterns.Samples.DI
 
         void Start()
         {
-            // 1. Obtenemos el contenedor (registrado automáticamente en DependencyInitializer)
-            var container = ServiceLocator.GetService<DependencyContainer>();
+            // 1. Get the container (automatically registered in DependencyInitializer)
+            var container = ServiceLocator.GetService<Container>();
 
-            // Opción A: Configuración Manual (Pure DI) - Control total, sin magia.
+            // Option A: Manual Configuration (Pure DI) - Total control, no magic.
             if (enemy) enemy.Construct(container.Resolve<IScoreCalculator>(), container.Resolve<ILogService>());
 
-            // Opción B: Inyección Automática (Reflexión) - Más rápido de escribir.
+            // Option B: Automatic Injection (Reflection) - Faster to write.
             if (turret) container.Inject(turret);
         }
     }
